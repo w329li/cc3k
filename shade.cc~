@@ -1,0 +1,13 @@
+#include <iostream>
+#include <string>
+#include "shade.h"
+#include "action.h"
+
+using namespace std;
+
+Shade::Shade(Action *a)
+  :Player(125,25,25,"Shade",a) {}
+
+
+
+

@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include "gold.h"
+#include "player.h"
+#include "action.h"
+
+using namespace std;
+
+
+Gold::Gold(int value,string type,Action *a) 
+  :Item('G',a),value{value},size{type} {}
+
+Gold::~Gold() {}
+
+void Gold::pick(Player *p) {
+        p->setgold(value);
+}
+
+int Gold::getvalue() {
+    return value;
+}
+
+string Gold::getsize() {
+    return size;
+}
+
+void Gold::notify(Player *pc) {
+  string c = "pc finds gold (" + size + ")";
+  a->notify(c);
+}
+
+void Gold::use(Player *pc) {
+  pc->setgold(value);
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,142 @@
+#include <utility>
+#include <vector>
+#include "subject.h"
+#include "observer.h"
+#include "cell.h"
+#include "info.h"
+#include "item.h"
+#include "character.h"
+#include "small.h"
+#include "normal.h"
+#include "hhoard.h"
+#include "mhoard.h"
+#include "dhoard.h"
+#include "enemy.h"
+#include "potion.h"
+
+using namespace std;
+
+Cell::Cell(string symbol,bool moveable,int r, int c,Action *a)
+  :basic{symbol},symbol{symbol},moveable{moveable},r{r},c{c},a{a} {}
+
+bool Cell::have() {
+  if(symbol != ".") return true;
+  return false;
+}
+
+bool Cell::ifmoveable() {
+  if(basic == "+" || basic == "#") return true;   ///aaaa
+  return (moveable && (!have()));
+}
+
+
+bool Cell::monstermoveable() {
+  return (moveable && (!have()));
+}
+
+
+void Cell::setstair() {
+    symbol = "\\";
+}
+
+
+void Cell::erase() {
+  // cout << "start erase." << endl;
+  if(!(observers.back()->getsymbol() == "P" ||
+     observers.back()->getsymbol() == "G")) {
+    //  cout << "here ff" << endl;
+    Observer *e = observers.back();
+    if(Enemy *d = dynamic_cast<Enemy *>(e)) {
+      int type = d->dropgold();
+    Gold *g = nullptr;
+    switch(type) {
+    case 1: set(g = new Small(a)); break;
+    case 2: set(g = new Normal(a)); break;
+    case 3: set(g = new Hhoard(a)); break;
+    case 4: set(g = new Mhoard(a)); break;
+    case 5: set(g = new Dhoard(a)); break;
+    }
+    }
+  }else {
+    //   cout << "want to change" << symbol << "ss" << endl;
+    symbol = basic;
+    Observer *o = observers.back();
+    observers.pop_back();
+    delete o;
+  }
+}
+
+
+
+
+Cell::~Cell() {
+  Observer *e = observers.back();
+  if(Enemy *d = dynamic_cast<Enemy *>(e)) {
+    delete d;
+  } else if(Potion *p = dynamic_cast<Potion *>(e)) {
+    delete p;
+  }
+}
+
+
+void Cell::set(Observer *o) {
+  attach(o);
+  symbol = o->getsymbol();
+  if(Enemy *d = dynamic_cast<Enemy *>(o)) {
+    d->setpos(r,c);
+  } else if(Player *p = dynamic_cast<Player *>(o)) {
+    p->setpos(r,c);
+  }
+}
+
+void Cell::leave() {
+  observers.pop_back();
+  symbol = basic;
+}
+
+void Cell::use(Player *player) {
+  Observer *e = observers.back();
+  if(Enemy *d = dynamic_cast<Enemy *>(e)) {
+    d->use(player);
+    if(d->ifdead()) {
+      erase();
+    }
+  } else if(Potion *p = dynamic_cast<Potion *>(e)) {
+    //   cout << "touch the medi" << endl;
+    p->use(player);
+    erase();
+  }
+}
+
+static bool ifmonster(const string symbol) {
+  return  (symbol == "H" || symbol == "W" || symbol == "E" || symbol == "O"
+	   || symbol == "M" || symbol == "D" || symbol == "L");
+ }
+
+void Cell::notify(Player *player) {
+  string symbol = observers.back()->getsymbol();
+  if(symbol == "G" || symbol == "P" || ifmonster(symbol)) {
+    //  symbol = "X";
+    observers.back()->notify(player);
+  }
+}
+//  if(symbol != "P") {
+//  Observer *e = observers.back();
+//  if(Enemy *d = dynamic_cast<Enemy *>(e)) {
+//    if(d->ifdead()) {
+//      erase();
+Observer* Cell::getback() {
+  return observers.back();
+}
+
+string Cell::getsymbol() {
+  return symbol;
+}
+
+int Cell::getr() {
+  return r;
+}
+
+int Cell::getc() {
+  return c;
+}

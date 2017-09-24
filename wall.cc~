@@ -1,0 +1,10 @@
+#include <iostream>
+#include "wall.h"
+#include "cell.h"
+
+using namespace std;
+
+Wall::Wall(char symbol, int r, int c, Action *a)
+  :Cell(symbol, false, r, c,a) {}
+
+Wall::~Wall() {}

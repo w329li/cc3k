@@ -1,0 +1,29 @@
+#include "WA.h"
+#include <string>
+
+using namespace std;
+
+WA::WA(Action* a): Potion(a){}
+WA::~WA(){}
+
+static bool WA :: used() {
+    return Potion::ifdrink("WA");
+}
+
+
+void WA:: use(Player *p) {
+    if (p->getrace()=="Drow"){
+    p->setatk(-8);
+  }else {
+    p->setatk(-5);
+  }
+}
+
+
+void WA::notify(Player *p) {
+  if(used()) {
+    a->notify("PC find WA.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}

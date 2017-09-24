@@ -1,0 +1,9 @@
+#include <iostream>
+#include <string>
+#include "troll.h"
+
+using namespace std;
+
+Troll:: Troll(): Player(125,25,15,"Troll",a) {}
+
+

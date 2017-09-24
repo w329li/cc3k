@@ -1,0 +1,29 @@
+#include "RH.h"
+#include <string>
+
+using namespace std;
+
+RH::RH(Action* a):Potion(a){}
+RH::~RH(){}
+
+bool RH:: used() {
+  return Potion::ifdrink("RH");
+}
+
+
+void RH:: use(Player *p) {
+    if (p->getrace()=="Drow"){
+    p->sethp(15);
+  }else {
+    p->sethp(10);
+  }
+}
+
+
+void RH::notify(Player *pc) {
+  if(used()) {
+    a->notify("PC find RH.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}

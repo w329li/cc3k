@@ -1,0 +1,30 @@
+#include <string>
+#include "dhoard.h"
+
+using namespace std;
+
+Dhoard::Dhoard(Action *a): Gold(6,"dhoard",a) {}
+
+Dhoard::Dhoard(Action *a,Dragon *d): Gold(6, "dhoard",a),d{d} {}
+
+Dhoard:: ~Dhoard() {}
+
+void adddragon(Dragon *dra) {
+  d = d;
+}
+
+void Dhoard::notify(Player *pc) {
+  string c = "pc finds dragon hoard (" + getsize()  + ")";
+  a->notify(c);
+  if(d) {
+    d->attack(pc);
+  }
+}
+
+void Dhoard::use(Player *pc) {
+  pc->setgold(value);
+  if(d) {
+    d->attack(pc);
+  }
+}
+

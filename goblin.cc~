@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include "goblin.h"
+#include <cmath>
+#include "enemy.h"
+
+using namespace std;
+
+Goblin:: Goblin(Action *a)
+    :Player(110,15,20,"Goblin",a) {}
+
+
+
+void Goblin:: defend(Enemy &o) {
+    int n = getdamage(o);
+  stringstream ss;
+  ss << n;
+  string damage  = ss.str();
+  if(o.getrace() == "Orc") {
+  sethp((-1) * ceil(n * 1.5));
+  } else {
+    sethp((-1) * n);
+  }
+  if(Character::gethp() <= 0) {
+    Character::dead();
+  } else {
+    char q = o.Character::getsymbol();
+    string c = q + " deals " + damage + "damage to PC.";
+    a->notify(c);
+  }
+    // extra injury from orcs
+}
+
+Goblin::~Goblin() {}
+
+

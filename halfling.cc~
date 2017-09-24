@@ -1,0 +1,8 @@
+#include "halfling.h"
+#include "action.h"
+#include "enemy.h"
+using namespace std;
+
+Halfling::Halfling(Action *a):Enemy(100,15,20,"Halfling",'L',a){}
+
+Halfling::~Halfling(){}

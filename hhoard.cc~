@@ -1,0 +1,10 @@
+#include "hhoard.h"
+#include <string>
+
+using namespace std;
+
+Mhoard:: Hhoard(): Gold(4,"hhoard",a){}
+
+Mhoard:: ~Hhoard() {}
+
+

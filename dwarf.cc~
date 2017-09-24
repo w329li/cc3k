@@ -1,0 +1,7 @@
+#include "dwarf.h"
+#include "action.h"
+using namespace std;
+
+Dwarf::Dwarf(int r, int c, Action *a):Enemy(r, c, 100,20,30,"Dwarf","W",a){}
+
+Dwarf::~Dwarf(){}

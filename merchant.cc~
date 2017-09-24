@@ -1,0 +1,43 @@
+#include "merchant.h"
+#include "action.h"
+#include "enemy.h"
+using namespace std;
+
+bool Merchant::hostile = false;
+
+Merchant::Merchant(int r, int c,Action* a):Enemy(r, c, 30,70,5,"Merchant","M",a){}
+
+Merchant::~Merchant(){}
+
+int Merchant::dropgold(){
+    return 4;
+}
+
+bool Merchant::ifhate() {
+  return hostile;
+}
+
+void Merchant::tobefriend() {
+  hostile = false;
+}
+
+void Merchant::defend(Player &p) {
+  hostile = true;
+  int n = getdamage(p);
+  stringstream ss;
+  ss << n;
+  string damage  = ss.str();
+  sethp((-1) * n);
+  if(Character::gethp() <= 0) {
+    Character::dead();
+  } else {
+    string symbol= Character::getsymbol();
+      int hp=gethp();
+      ss << hp;
+      string h;
+      ss >> h;
+    string c = "PC deals " + damage + "damage to " + symbol + "("+ h + " HP).";
+      a->notify(c);
+  }
+}
+

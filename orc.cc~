@@ -1,0 +1,8 @@
+#include "orc.h"
+#include "action.h"
+using namespace std;
+
+Orc::Orc(Action *a):Enemy(180,30,25,"Orc",'O',a) {}
+
+Orc::~Orc(){}
+

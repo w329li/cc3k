@@ -1,0 +1,9 @@
+#include "human.h"
+using namespace std;
+Human::Human(int r, int c, Action* a):Enemy(r, c, 140,20,20,"Human","H",a){}
+
+Human::~Human(){}
+
+int Human::dropgold(){
+  return 3;
+}

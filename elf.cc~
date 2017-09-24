@@ -1,0 +1,21 @@
+#include "elf.h"
+#include "player.h"
+#include <cmath>
+using namespace std;
+
+Elf::Elf(Action *a):Enemy(140,30,10,"Elf","E",a){}
+
+Elf::~Elf(){};
+
+void Elf::attack(Player *p){
+    turnover = true;
+    int success;
+    success = rand() % 2;
+    if (success==1){
+      p->defend(*this);
+    }
+    success = rand() % 2;
+    if (success==1){
+      p->defend(*this);
+    }
+}

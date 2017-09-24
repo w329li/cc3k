@@ -1,0 +1,8 @@
+#include <iostream>
+#include <string>
+#include "drow.h"
+
+using namespace std;
+
+Drow::Drow(Action *a)
+  :Player(150,25,15,"Drow",a){}

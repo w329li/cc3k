@@ -1,0 +1,9 @@
+#include "small.h"
+#include <string>
+
+using namespace std;
+
+Small::Small(Action *a)
+  :Gold(1,"small",a) {}
+      
+Small:: ~Small() {}

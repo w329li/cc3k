@@ -1,0 +1,31 @@
+#include "BD.h"
+#include <string>
+
+using namespace std;
+
+
+
+BD::BD(Action *a):Potion(a) {}
+BD::~BD(){}
+
+bool BD :: used(Player *p) {
+    return Potion::ifdrink("BD");
+}
+
+
+void BA:: use(Player *p) {
+    if (p->getrace()=="Drow"){
+    p->setdef(8);
+  }else {
+    p->setdef(5);
+  }
+     a->notify("PC uses BD.");
+}
+
+void BA::notify() {
+  if(used()) {
+    a->notify("PC find BD.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}

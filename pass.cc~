@@ -1,0 +1,9 @@
+#include <iostream>
+#include "pass.h"
+
+using namespace std;
+
+Pass::Pass(char symbol, int r, int c,Action *a)
+  :Cell(symbol, true, r, c, a) {}
+
+Pass::~Pass() {}

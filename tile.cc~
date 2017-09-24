@@ -1,0 +1,9 @@
+#include <iostream>
+#include "tile.h"
+
+using namespace std;
+
+Tile::Tile(int r, int c,Action *a)
+  :Cell('.', true, r, c,a) {}
+
+Tile::~Tile() {}

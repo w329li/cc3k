@@ -1,0 +1,103 @@
+#include "enemy.h"
+#include "player.h"
+#include "action.h"
+#include <cmath>
+#include <sstream>
+#include <iostream>
+#include "shade.h"
+#include "drow.h"
+#include "vampire.h"
+#include "troll.h"
+#include "goblin.h"
+#include "character.h"
+using namespace std;
+
+Enemy::Enemy(int hp, int atk, int def, string name, string n,Action *a):Character(hp,atk,def,name,n,a){}
+Enemy::~Enemy(){}
+
+int Enemy::dropgold(){
+    int chance;
+    chance = rand() % 2;
+    if (chance==1){
+        return 2;
+    }
+    else{
+        return 1;
+    }
+}
+
+
+
+int Enemy::getdamage(Player &e) {
+    cout << "defend is " << getdef() << endl;
+    cout << "attack is " << e.getatk() << endl;
+  //  double first = ((100 / (double)(100 + getdef())) * e.getatk());
+ //   cout << "first is " << first << endl;
+  int damage = ceil((100 / (double)(100 + getdef())) * e.getatk());
+  return damage;
+}
+
+
+void Enemy::attack(Player *p){
+  turnover = true;
+    int success;
+    success = rand() % 2;
+    if (success==1){
+      p->defend(*this);
+    }
+}
+
+void Enemy::notify(Player *pc) {
+  if(turnover == false) {
+    attack(pc);
+    }
+}
+
+void Enemy::use(Player *pc) {
+  attack(pc);
+}
+
+bool Enemy::ifturnover() {
+  return turnover;
+}
+
+void Enemy::changeturn() {
+  if(turnover) {
+    turnover = false;
+  } else {
+    turnover = true;
+  }
+
+}
+
+void Enemy::dead() {
+  Character::dead();
+  string s = Character::getsymbol();
+  a->notify(s + " has been destoried.");
+}
+
+
+void Enemy::defend(Player &p) {
+    cout << "enemy start to defend " << endl;
+   int n = getdamage(p);
+   cout << "damage is " << n << endl;
+  stringstream ss;
+  ss << n;
+  string damage  = ss.str();
+  sethp((-1) * n);
+  if(Character::gethp() <= 0) {
+    Character::dead();
+  } else {
+    string symbol = Character::getsymbol();
+      string hp;
+      ss << gethp();
+      ss >> hp;
+      string c = "PC deals " + damage + "damage to " + symbol + "(" + hp + " HP).";
+      a->notify(c);
+  }
+}
+
+
+string Enemy::getsymbol() {
+  return Character::getsymbol();
+}

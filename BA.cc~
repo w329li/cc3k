@@ -1,0 +1,37 @@
+#include "BA.h"
+#include <string>
+
+using namespace std;
+
+
+
+bool BA :: used() {
+    return Potion::ifdrink("BA");
+}
+
+BA::BA(Action *a)
+  :Potion(a) {}
+
+BA::~BA(){}
+
+void BA::notify(Player *p) {
+  if(used()) {
+    a->notify("PC find BA.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}
+
+
+void BA:: use(Player *p) {
+  Potion::havedrink("BA");
+  if (p->getrace()=="Drow"){
+    p->setatk(8);
+  }else {
+    p->setatk(5);
+  }
+  a->notify("PC uses BA.");
+
+}
+
+

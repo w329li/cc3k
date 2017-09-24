@@ -1,0 +1,29 @@
+#include "WD.h"
+#include <string>
+
+using namespace std;
+
+
+WD::WD(Action *a):Potion(a){}
+WD::~WD(){}
+
+static bool WD::used() {
+    return Potion::ifdrink("WD");
+}
+
+
+void WD::use(Player *p) {
+    if (p->getrace()=="Drow"){
+    p->setdef(-8);
+  }else {
+    p->setdef(-5);
+  }
+}
+
+void WD::notify(Player *p) {
+  if(used()) {
+    a->notify("PC find WD.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}

@@ -1,0 +1,85 @@
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include "character.h"
+#include "action.h"
+
+using namespace std;
+
+Character::Character(int r, int c, int hp, int atk, int def,string race,string symbol,Action *a)
+  :a{a},hp{hp},atk{atk},def{def},gold{0},isdead{false},race{race},symbol{symbol},maxhp{hp},r{r},c{c} {}
+
+int Character:: gethp() {
+    return hp;
+}
+
+void Character:: sethp(int dis) {
+    hp = hp + dis;
+    if(hp > maxhp) {
+      hp = maxhp;
+    }
+}
+
+int Character:: getatk() {
+    return atk;
+}
+
+void Character:: setatk(int dis) {
+    atk += dis;
+    if(atk < 0 ) atk = 0;
+}
+
+int Character:: getdef() {
+    return def;
+}
+
+void Character:: setdef(int dis) {
+    def += dis;
+    if(def < 0) def = 0;
+}
+
+int Character:: getgold() {
+    return gold;
+}
+
+void Character:: setgold(int dis) {
+    gold += dis;
+    stringstream ss;
+    ss << dis;
+    string g  = ss.str();
+    string c = "PC gets " + g + "more gold.";
+      a->notify(c);
+}
+
+
+string Character:: getrace() {
+    return race;
+}
+
+string Character::getsymbol(){
+    return this->symbol;
+}
+
+void Character::setpos(int row, int col) {
+  r = row;
+  c = col;
+}
+
+Character:: ~Character() {}
+
+
+void Character:: dead() {
+  isdead = true;
+}
+
+bool Character::ifdead() {
+  return isdead;
+}
+
+Info Character::getInfo() {
+  Info info = {r,c};
+  return info;
+}
+
+

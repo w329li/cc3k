@@ -1,0 +1,121 @@
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+#include "player.h"
+#include "game.h"
+#include "floor.h"
+#include "merchant.h"
+#include "potion.h"
+#include "shade.h"
+#include "drow.h"
+#include "vampire.h"
+#include "troll.h"
+#include "goblin.h"
+#include "action.h"
+
+
+using namespace std;
+
+Game::Game()
+  :a{new Action()}{}
+
+void Game::choose() {
+    cout << "choose one race" << endl;
+    cout << "s: Shade" << endl;
+    cout << "d: Drow" << endl;
+    cout << "v: Vampire" << endl;
+    cout << "t: Troll" << endl;
+    cout << "g: Goblin" << endl;
+    string in = "";
+    cin >> in;
+      if(in == "s") pc = new Shade(a);
+      if(in == "d") pc = new Drow(a);
+      if(in == "v") pc = new Vampire(a);
+      if(in == "t") pc = new Troll(a);
+      if(in == "g") pc = new Goblin(a);
+      //     default:
+      //         cout << "Incorrect number, please continue" << endl;
+      //        choose();
+      cout << "finished" << endl;
+}
+
+
+void Game::startfloor(string file) {
+  cout << "here " << endl;
+    layout = file;
+    f = new Floor(a);
+    f->setpc(pc);
+    f->init(file);
+    a->notify("Player character has spawned");
+    cout << (*f);
+}
+
+void Game::play() {
+    string com = "";
+    while(cin >> com) {
+        if(com == "no" || com == "so" || com == "ea" || com == "we" || com == "ne" ||
+                com == "nw" || com == "se" || com == "sw") {
+	  cout << "here " << endl;
+            f->Playerwalk(com);
+        } else if(com == "u") {
+            string dir = "";
+            cin >> dir;   //wrong???
+            f->usePotion(dir);
+        } else if(com == "a") {
+            string dir = "";
+            cin >> dir;
+            f->pcattack(dir);
+        } else if(com == "f") {
+            f->stopmove();
+        } else if(com == "r") {
+            break;
+        } else if(com == "q") {
+            cout << "Player admit to defeat and exit the game" << endl;
+            return;
+        }
+	if(pc->getrace() == "Troll") {
+	  pc->sethp(5);
+	}
+        if(f->getsuccess()) {
+            nextfloor();
+        }
+	if(f->fail()) {
+        cout << (*f) << endl;
+	cout << "restart the game ?  (Y: yes)" << endl;
+	string c;
+        cin >> c;
+	if(c == "Y") {
+	  reset();
+	}
+	  return;
+	}
+        cout << (*f) << endl;
+    }
+    if(com == "r") reset();
+}
+
+void Game::reset() {
+    delete f;
+    delete pc;
+    Floor::setfloor();
+    Merchant::tobefriend();
+    Potion::clearpotion();
+    choose();
+    startfloor(layout);
+    play();
+}
+
+void Game::nextfloor() {
+    delete f;
+    startfloor(layout);
+    pc->tobasic();
+    play();
+}
+
+Game::~Game() {
+  delete f;
+  delete pc;
+}
+
+

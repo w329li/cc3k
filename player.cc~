@@ -1,0 +1,86 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <sstream>
+#include "character.h"
+#include "player.h"
+#include "action.h"
+#include "enemy.h"
+#include "human.h"
+#include "halfling.h"
+#include "merchant.h"
+#include "elf.h"
+#include "dwarf.h"
+#include "dragon.h"
+#include "orc.h"
+
+
+using namespace std;
+
+Player:: Player(int hp,int atk,int def,string race, Action *a)
+  :Character(hp,atk,def,race,'@',a) {
+  basicatk = atk;
+  basicdef = def;
+}
+
+
+void Player:: attack(Enemy* e) {
+    strike(*e);
+}
+
+int Player:: getdamage(Enemy &e) {
+  int damage = ceil(100 / (100 + getdef()) * e.getatk());
+  return damage;
+}
+
+void Player:: strike(Enemy &e) {
+  string race = e.getrace();
+  if(race == "Halfling") {
+    int success = rand() % 2;
+    if(success) e.defend(*this);
+  } else {
+      e.defend(*this);
+  }
+}
+
+
+void Player::pickgold(int num) {
+  setgold(num);
+}
+
+
+
+void Player:: defend(Enemy &h) {
+    int n = getdamage(h);
+  stringstream ss;
+  ss << n;
+  string damage  = ss.str();
+  sethp((-1) * n);
+  if(Character::gethp() <= 0) {
+    Character::dead();
+  } else {
+    char q = h.Character::getsymbol();
+    stringstream ss;
+    ss << q;
+    string t;
+    ss >> t;
+    string c = t + " deals " + damage + "damage to PC.";
+    a->notify(c);
+  }
+}
+
+void Player::tobasic() {
+  setatk(basicatk-getatk());
+  setdef(basicdef-getdef());
+}
+
+void Player::notify(Player *pc) {
+}
+
+char Player::getsymbol() {
+  return Character::getsymbol();
+}
+
+Player::~Player() {}
+
+

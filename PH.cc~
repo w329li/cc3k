@@ -1,0 +1,30 @@
+#include "PH.h"
+#include <string>
+
+using namespace std;
+
+
+PH::PH(Action *a): Potion(a){}
+PH::~PH(){}
+
+static bool PH :: used() {
+    return Potion::ifdrink("PH");
+}
+
+
+void PH:: use(Player *p) {
+    if (p->getrace()=="Drow"){
+    p->sethp(-15);
+  }else {
+    p->sethp(-10);
+  }
+     a->notify("PC uses PH.");
+}
+
+void PH::notify(Player *p) {
+  if(used()) {
+    a->notify("PC find PH.");
+      } else {
+    a->notify("PC find unknown potion.");
+  }
+}
